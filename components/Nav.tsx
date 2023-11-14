@@ -44,7 +44,7 @@ const Nav = () => {
     <nav className="flex-between mb-16 w-full pt-3">
       <Link href="/" className="flex-center flex gap-2">
         <Image
-          src="/assets/images/Logo.svg"
+          src="/assets/images/logo.svg"
           alt="Prompto logo"
           width={30}
           height={30}
