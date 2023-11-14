@@ -2,32 +2,21 @@
 
 import { useState, useEffect } from "react";
 import PromptCard from "./PromptCard";
+import PromptCardList from "./PromptCardList";
 import { IPost } from "@/types/types";
-
-type PromptCardListProps = {
-  data: IPost[];
-  handleTagClick: () => void;
-};
-
-const PromptCardList = ({ data, handleTagClick }: PromptCardListProps) => {
-  return (
-    <div className="prompt_layout mt-16">
-      {data.map((post) => (
-        <PromptCard
-          key={post._id}
-          post={post}
-          handleTagClick={handleTagClick}
-        />
-      ))}
-    </div>
-  );
-};
 
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [posts, setPosts] = useState([]);
 
-  const handleSearchChange = (e: React.SyntheticEvent) => {};
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchText(e.target.value);
+  };
+
+  const handleTagClick = (tag: string): void => {
+    setSearchText(tag);
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -37,6 +26,23 @@ const Feed = () => {
     };
     fetchPosts();
   }, []);
+
+  const filteredPosts = posts.filter((post: IPost) => {
+    const {
+      prompt,
+      tag,
+      creator: { username },
+    } = post;
+    const searched = searchText.toLowerCase();
+
+    if (
+      prompt.toLowerCase().includes(searched) ||
+      tag.toLowerCase().includes(searched) ||
+      username?.toLowerCase().includes(searched)
+    ) {
+      return true;
+    }
+  });
 
   return (
     <section className="feed">
@@ -50,7 +56,7 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <PromptCardList data={posts} handleTagClick={() => {}} />
+      <PromptCardList data={filteredPosts} handleTagClick={handleTagClick} />
     </section>
   );
 };

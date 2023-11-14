@@ -26,7 +26,7 @@ export interface IUser {
 
 export interface IPost {
   prompt: string;
-  creator?: ICreator;
+  creator: ICreator;
   tag: string;
   _id?: string;
   __v?: number;
@@ -41,7 +41,7 @@ export interface INewPost {
 export interface ICreator {
   email: string;
   image: string;
-  username: string;
+  username?: string;
   __v?: number;
   _id?: string;
 }

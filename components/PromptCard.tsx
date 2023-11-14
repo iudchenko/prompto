@@ -19,18 +19,19 @@ const PromptCard = ({
   const [copied, setCopied] = useState("");
 
   const handleProfileClick = () => {
-    // console.log(post);
+    const goToProfile = () => {
+      router.push(
+        `/profile/${post?.creator?._id}?name=${post?.creator?.username}`,
+      );
+    };
 
-    // if (session?.user && sessionUser) {
-    //   (session.user as IProfile).id = sessionUser._id.toString();
-    // }
-
-    if (post?.creator?._id === (session?.user as IProfile).id)
-      return router.push("/profile");
-
-    router.push(
-      `/profile/${post?.creator?._id}?name=${post?.creator?.username}`,
-    );
+    if (!session) {
+      goToProfile();
+    } else {
+      if (post?.creator?._id === (session?.user as IProfile).id)
+        return router.push("/profile");
+      goToProfile();
+    }
   };
 
   const handleCopy = () => {
